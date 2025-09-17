@@ -59,7 +59,7 @@ if fileExists "$envFile" && ! sudo grep -q "HTTP_PROXY=" "$envFile"; then
     echo "rsync_proxy=\"http://$proxy\"" | sudo tee -a "$envFile" > /dev/null
     echo "no_proxy=\"$noproxyList\"" | sudo tee -a "$envFile" > /dev/null
 else
-    warning "[SKIPPED] Proxy is already configudanger in $envFile"
+    warning "[SKIPPED] Proxy is already configurated in $envFile"
 fi
 
 ############################################################################################################
@@ -80,7 +80,7 @@ if fileExists "$bashrc" && ! grep -q "export HTTP_PROXY=" "$bashrc"; then
         echo "export no_proxy=\"$noproxyList\""
     } >> "$bashrc"
 else
-    warning "[SKIPPED] Proxy is already configudanger in $bashrc"
+    warning "[SKIPPED] Proxy is already configured in $bashrc"
 fi
 
 ############################################################################################################
@@ -97,7 +97,7 @@ if fileExists "$npmrc" && ! grep -q "proxy=" "$npmrc"; then
         echo "https-proxy=http://$proxy"
     } >> "$npmrc"
 else
-    warning "[SKIPPED] Proxy is already configudanger in $npmrc"
+    warning "[SKIPPED] Proxy is already configured in $npmrc"
 fi
 
 ############################################################################################################
@@ -113,7 +113,7 @@ if fileExists "$wgetrc" && ! grep -q "https_proxy =" "$wgetrc"; then
         echo "use_proxy = on"
     } > "$wgetrc"
 else
-    warning "[SKIPPED] Proxy is already configudanger in $wgetrc"
+    warning "[SKIPPED] Proxy is already configured in $wgetrc"
 fi
 
 ############################################################################################################
@@ -124,7 +124,7 @@ if fileExists "$curlrc" && ! grep -q "proxy=" "$curlrc"; then
     ensureTrailingNewline "$curlrc"
     echo "proxy=http://$proxy" > "$curlrc"
 else
-    warning "[SKIPPED] Proxy is already configudanger in $curlrc"
+    warning "[SKIPPED] Proxy is already configured in $curlrc"
 fi
 
 ############################################################################################################
@@ -132,7 +132,7 @@ info "# GNOME Settings..."
 ############################################################################################################
 gsettings set org.gnome.system.proxy mode 'auto'
 gsettings set org.gnome.system.proxy autoconfig-url 'http://172.31.33.93/proxy.pac'
-success "[INFO] Proxy for Gnome settings has been configudanger"
+success "[INFO] Proxy for Gnome settings has been configured"
 
 ############################################################################################################
 info "# Gradle Proxy Settings..."
@@ -149,7 +149,7 @@ if fileExists "$gradleProps" && ! grep -q "systemProp.http.proxyHost=" "$gradleP
         echo "systemProp.http.nonProxyHosts=$noproxyList"
     } >> "$gradleProps"
 else
-    warning "[SKIPPED] Proxy is already configudanger in $gradleProps"
+    warning "[SKIPPED] Proxy is already configured in $gradleProps"
 fi
 
 ############################################################################################################
@@ -170,7 +170,7 @@ if fileExists "$dockerProxyFile" && \
     sudo systemctl restart docker > /dev/null
     success "[INFO] Docker has been restarted"
 else
-    warning "[SKIPPED] Proxy is already configudanger in $dockerProxyFile"
+    warning "[SKIPPED] Proxy is already configured in $dockerProxyFile"
 fi
 
 ############################################################################################################
@@ -180,13 +180,13 @@ read -p "Do you want to add configuration for APT (Debian-based)? (Y/N): " answe
 if [[ "$answer" =~ ^[Yy]$ ]]; then
     aptProxyFile="/etc/apt/apt.conf.d/98proxy.conf"
     if grep -q "Acquire::http::Proxy" "$aptProxyFile" 2>/dev/null; then
-        warning "[INFO] APT proxy is already configudanger"
+        warning "[INFO] APT proxy is already configured"
     else
         {
             echo "Acquire::http::Proxy \"http://$proxy\";"
             echo "Acquire::https::Proxy \"http://$proxy\";"
         } | sudo tee "$aptProxyFile" > /dev/null
-        success "[INFO] APT proxy has been configudanger"
+        success "[INFO] APT proxy has been configured"
     fi
 fi
 
