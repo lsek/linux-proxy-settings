@@ -4,8 +4,8 @@
 # User Variables
 # If you want to use username and pass add this to proxy e.g. proxy="username:password@mydomain.com:8080"
 ############################################################################################################
-proxy="proxy.mydomain.com:8080"
-noproxyList="127.0.0.0/8,localhost,10.0.0.0/8,172.16.0.0/12,192.168.0.0/16,*.mydomain.com"
+proxy="mydomain.com:8080"
+noproxyList="127.0.0.0/8, localhost, 10.0.0.0/8, 172.16.0.0/12, 192.168.0.0/16, *.mydomain.com"
 
 ############################################################################################################
 # UI Functions
