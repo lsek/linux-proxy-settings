@@ -1,4 +1,4 @@
-# 🧰 linux-proxy-settings
+# 🧰 linux-settings
 
 A Bash script to easily enable or disable system-wide proxy settings for various Linux tools and environments.
 
