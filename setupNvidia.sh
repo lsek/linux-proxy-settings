@@ -1,11 +1,11 @@
 #!/bin/bash
 
-# NVIDIA Wayland Setup Script for Arch/EndeavourOS (GNOME + NVIDIA Quadro P620)
-# Wersja: z integracją Firefox + Chromium + VAAPI
+# NVIDIA + GNOME + Wayland setup (dla Arch/EndeavourOS)
+# ⚠️ NIE instaluje przeglądarek – tylko konfiguruje środowisko uruchomieniowe
 
 set -e  # zatrzymaj skrypt przy błędzie
 
-echo "=== 🔄 Aktualizacja systemu i instalacja sterowników NVIDIA ==="
+echo "=== 🔄 Instalacja sterowników NVIDIA i zależności VAAPI ==="
 
 sudo pacman -Syu --needed \
   nvidia \
@@ -13,30 +13,27 @@ sudo pacman -Syu --needed \
   nvidia-settings \
   libva \
   libva-nvidia-driver \
-  egl-wayland \
-  firefox \
-  chromium \
-  xdg-utils \
-  nano
+  egl-wayland
 
-echo "=== ✅ Instalacja pakietów zakończona ==="
+echo "✅ Sterowniki i biblioteki zainstalowane"
 echo ""
 
-# Edytuj plik konfiguracyjny GDM, jeśli istnieje
+# Edycja pliku GDM – upewnij się, że Wayland jest włączony
 CUSTOM_CONF="/etc/gdm/custom.conf"
 
 if [ -f "$CUSTOM_CONF" ]; then
     echo "=== 🛠️ Sprawdzanie ustawień GDM (Wayland) ==="
     sudo sed -i 's/^WaylandEnable=false/#WaylandEnable=false/' "$CUSTOM_CONF"
-    echo "✅ Plik $CUSTOM_CONF został sprawdzony i zmodyfikowany (jeśli potrzeba)."
+    echo "✅ Plik $CUSTOM_CONF zmodyfikowany (jeśli potrzeba)"
 else
-    echo "⚠️ Plik $CUSTOM_CONF nie istnieje – pomijam modyfikację GDM."
+    echo "⚠️ Plik $CUSTOM_CONF nie istnieje – pomijam"
 fi
+
+# Utwórz katalog, jeśli nie istnieje
+mkdir -p ~/.local/share/applications
 
 echo ""
 echo "=== 🦊 Tworzenie skrótu: Firefox z VAAPI + Wayland ==="
-
-mkdir -p ~/.local/share/applications
 
 cat <<EOF > ~/.local/share/applications/firefox-vaapi.desktop
 [Desktop Entry]
@@ -52,24 +49,25 @@ EOF
 echo "✅ Utworzono: ~/.local/share/applications/firefox-vaapi.desktop"
 echo ""
 
-echo "=== 🌐 Tworzenie skrótu: Chromium z VAAPI + Wayland ==="
+echo "=== 🌐 Tworzenie skrótu: Google Chrome z VAAPI + Wayland ==="
 
-cat <<EOF > ~/.local/share/applications/chromium-vaapi.desktop
+cat <<EOF > ~/.local/share/applications/google-chrome-vaapi.desktop
 [Desktop Entry]
-Name=Chromium (VAAPI + Wayland)
+Name=Google Chrome (VAAPI + Wayland)
 Exec=env \
   XDG_SESSION_TYPE=wayland \
   LIBVA_DRIVER_NAME=nvidia \
-  chromium --enable-features=VaapiVideoDecoder,UseOzonePlatform \
-           --ozone-platform=wayland %U
+  google-chrome-stable \
+  --enable-features=VaapiVideoDecoder,UseOzonePlatform \
+  --ozone-platform=wayland %U
 Terminal=false
 Type=Application
-Icon=chromium
+Icon=google-chrome
 Categories=Network;WebBrowser;
 StartupNotify=true
 EOF
 
-echo "✅ Utworzono: ~/.local/share/applications/chromium-vaapi.desktop"
+echo "✅ Utworzono: ~/.local/share/applications/google-chrome-vaapi.desktop"
 echo ""
 
 echo "=== 🔁 Restart systemu zalecany ==="
