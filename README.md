@@ -11,6 +11,7 @@ A Bash script to easily enable or disable system-wide proxy settings for various
 
    ```bash
    chmod +x setupProxy.sh
+   chmod +x setupNvidia.sh
    ```
 
 3. Run the script in interactive mode:
@@ -19,6 +20,11 @@ A Bash script to easily enable or disable system-wide proxy settings for various
    ./setupProxy.sh
    ```
 
+4. Run setup nvidia card:
+
+   ```bash
+   ./setupNvidia.sh
+   ```
 ---
 
 ## 🚀 Usage
